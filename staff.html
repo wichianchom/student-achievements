@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>หลังบ้าน · ระบบแจ้งผลงานนักเรียน</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#152048">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Charmonman:wght@700&family=Mitr:wght@400;500;600&family=Sarabun:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+/* login */
+.login{min-height:70vh;display:grid;place-items:center;padding-block:40px}
+.login .panel{width:100%;max-width:420px;display:flex;flex-direction:column;gap:16px}
+/* overview */
+.queue{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.q-card{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);text-decoration:none;color:var(--ink);box-shadow:var(--shadow);min-width:0}
+a.q-card:hover{border-color:var(--accent)}
+.q-n{font-family:var(--font-display);font-size:1.9rem;line-height:1;font-variant-numeric:tabular-nums}
+.q-label{color:var(--ink-2);font-size:.95rem}
+.q-go{color:var(--accent);font-weight:600;font-size:.92rem;white-space:nowrap}
+.q-card.stack{flex-direction:column;align-items:stretch;gap:8px}
+.copy-line{display:flex;gap:8px}
+.copy-line input{flex:1;min-width:0}
+.filters{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:10px}
+.summary{display:flex;gap:28px;flex-wrap:wrap;padding:4px 0 18px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.summary div{display:flex;flex-direction:column}
+.summary b{font-family:var(--font-display);font-weight:500;font-size:1.6rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.summary span{color:var(--ink-3);font-size:.9rem}
+.bars-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bars h3{font-size:.95rem;color:var(--ink-2);margin-bottom:4px}
+.bar{display:grid;grid-template-columns:minmax(0,9.5em) 1fr 2.4em;align-items:center;gap:10px;font-size:.92rem}
+.bar-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2)}
+.bar-track{height:10px;border-radius:5px;background:var(--surface-2);overflow:hidden}
+.bar-fill{display:block;height:100%;border-radius:5px;background:var(--accent)}
+.bars.cat .bar-fill{background:var(--ribbon)}
+.bar-n{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.list{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:7.5em minmax(0,1fr) auto auto;gap:14px;align-items:center;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:14px 4px;cursor:pointer;color:var(--ink)}
+.row:first-child{border-top:0}
+.row:hover{background:var(--surface-2)}
+.row-date{color:var(--ink-3);font-size:.9rem;font-variant-numeric:tabular-nums}
+.row-main{min-width:0}
+.row-title{display:block;font-weight:600;line-height:1.4}
+.row-sub{display:block;color:var(--ink-2);font-size:.92rem}
+.row-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.empty{padding:36px 12px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--ink-2)}
+.empty svg{width:56px;height:56px;color:var(--ribbon)}
+/* cards */
+.cards{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow);min-width:0}
+.card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.card-title{font-family:var(--font-display);font-size:1.08rem;font-weight:500;line-height:1.4}
+.dl{display:grid;grid-template-columns:9em minmax(0,1fr);gap:4px 14px;font-size:.95rem;margin:0}
+.dl dt{color:var(--ink-3)}
+.dl dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.note-box{background:var(--bad-bg);color:var(--bad);border-radius:10px;padding:10px 14px;font-weight:500}
+.meta-line{color:var(--ink-3);font-size:.88rem}
+.section-label{font-family:var(--font-display);font-size:1rem;color:var(--ink-2);margin-top:6px}
+.gallery{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.gallery a{flex:none;display:block}
+.gallery img{height:150px;width:auto;max-width:none;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);min-width:110px;display:block}
+.timeline{display:flex;flex-direction:column;gap:4px;color:var(--ink-2);font-size:.9rem;border-left:3px solid var(--line);padding-left:12px}
+.confirm{background:var(--bad-bg);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;color:var(--bad);font-weight:500}
+/* publicity */
+.pub-grid{display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px;align-items:start}
+.pub-list{display:flex;flex-direction:column;gap:6px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px)}
+.pick{display:flex;flex-direction:column;gap:2px;text-align:left;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;color:var(--ink);width:100%}
+.pick:hover{border-color:var(--accent)}
+.pick[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent);background:var(--accent-soft)}
+.pick b{font-weight:600;line-height:1.35;font-size:.94rem}
+.pick span{color:var(--ink-3);font-size:.84rem}
+.pub-work{display:flex;flex-direction:column;gap:16px;min-width:0}
+.pub-editor{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:20px;align-items:start}
+.poster-wrap{background:var(--surface-2);border-radius:var(--r);padding:12px;border:1px solid var(--line)}
+.poster-wrap canvas{display:block;width:100%;height:auto;border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.controls{display:flex;flex-direction:column;gap:16px}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:10px;overflow:hidden;flex-wrap:wrap}
+.seg label{position:relative;padding:8px 14px;cursor:pointer;font-weight:500;font-size:.94rem;border-right:1px solid var(--line-2)}
+.seg label:last-child{border-right:0}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--accent);color:var(--accent-ink)}
+.seg label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:-2px}
+.photo-pick{display:flex;gap:8px;flex-wrap:wrap}
+.photo-pick button{width:64px;height:64px;padding:0;border-radius:8px;overflow:hidden;border:2px solid transparent;background:var(--surface-2);cursor:pointer;color:var(--ink-2);font-size:.8rem}
+.photo-pick button img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-pick button[aria-pressed="true"]{border-color:var(--accent)}
+.captions{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cap{display:flex;flex-direction:column;gap:8px;min-width:0}
+.cap-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.announce{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--line)}
+@media (max-width:960px){
+  .pub-grid{grid-template-columns:1fr}
+  .pub-list{position:static;flex-direction:row;overflow-x:auto;padding-bottom:4px}
+  .pub-list .section-label{display:none}
+  .pick{min-width:220px}
+  .pub-editor{grid-template-columns:1fr}
+  .poster-wrap{max-width:440px}
+}
+@media (max-width:760px){
+  .filters{grid-template-columns:1fr 1fr}
+  .filters .f-q{grid-column:1/-1}
+  .bars-grid,.captions{grid-template-columns:1fr}
+  .row{grid-template-columns:minmax(0,1fr) auto;gap:6px 12px}
+  .row-date{grid-column:1;grid-row:1}
+  .row>.st{grid-column:2;grid-row:1;justify-self:end}
+  .row-main{grid-column:1/-1}
+  .row-meta{grid-column:1/-1;flex-direction:row;align-items:center;flex-wrap:wrap}
+  .dl{grid-template-columns:1fr}
+  .dl dt{margin-top:6px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <div class="seal" id="brandSeal" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M10 3h4l3 8h-4z" fill="#152048"/><path d="M22 3h-4l-3 8h4z" fill="#d4a017"/><circle cx="16" cy="20" r="9" fill="#d4a017"/><circle cx="16" cy="20" r="6.2" fill="none" stroke="#8a6406" stroke-width="1.4"/><path d="M16 15.6l1.3 2.7 3 .4-2.2 2.1.5 3-2.6-1.4-2.6 1.4.5-3-2.2-2.1 3-.4z" fill="#8a6406"/></svg>
+      </div>
+      <div style="min-width:0">
+        <div class="brand-name" id="brandName">ระบบแจ้งผลงานนักเรียน</div>
+        <div class="brand-sub" id="brandSub">หลังบ้านสำหรับครูและฝ่ายประชาสัมพันธ์</div>
+      </div>
+    </div>
+    <div class="top-actions" id="topActions" hidden>
+      <span id="whoami"></span>
+      <button type="button" id="refreshBtn">รีเฟรช</button>
+      <button type="button" id="logoutBtn">ออกจากระบบ</button>
+    </div>
+  </div>
+</header>
+<nav class="tabs" aria-label="เมนูหลัก" id="tabsNav" hidden>
+  <div class="wrap">
+    <a class="tab" href="#overview" data-tab="overview">ภาพรวม</a>
+    <a class="tab" href="#review" data-tab="review">รอตรวจ <span class="count" id="cntReview" data-zero>0</span></a>
+    <a class="tab" href="#publicity" data-tab="publicity">ทำกราฟิก <span class="count" id="cntPub" data-zero>0</span></a>
+    <a class="tab" href="#school" data-tab="school">ตั้งค่าโรงเรียน</a>
+    <a class="tab" href="index.html" target="_blank" rel="noopener">แจ้งผลงาน ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <!-- เข้าสู่ระบบ -->
+  <section class="login" id="login">
+    <form class="panel" id="loginForm" novalidate>
+      <h1>เข้าสู่ระบบหลังบ้าน</h1>
+      <p class="muted">สำหรับครูผู้ตรวจผลงานและฝ่ายประชาสัมพันธ์ ขอรหัสเจ้าหน้าที่ได้จากผู้ดูแลระบบ</p>
+      <div class="banner warn" id="loginCfg" hidden></div>
+      <div class="field"><label class="req" for="lg-name">ชื่อของคุณ</label><input type="text" id="lg-name" placeholder="เช่น ครูสมศรี" autocomplete="name"><span class="hint">ใช้บันทึกว่าใครตรวจหรือประกาศผลงาน</span></div>
+      <div class="field"><label class="req" for="lg-pass">รหัสเจ้าหน้าที่</label><input type="password" id="lg-pass" autocomplete="current-password"></div>
+      <label class="check"><input type="checkbox" id="lg-remember" checked> จดจำในเครื่องนี้ (อย่าเลือกถ้าเป็นเครื่องส่วนกลาง)</label>
+      <button class="btn primary big" type="submit" id="lg-btn">เข้าสู่ระบบ</button>
+      <div class="banner bad" id="loginErr" hidden></div>
+    </form>
+  </section>
+
+  <div id="app" hidden>
+    <div class="banner bad" id="appErr" hidden style="margin-bottom:16px"></div>
+
+    <!-- ภาพรวม -->
+    <section class="view" data-view="overview">
+      <div class="queue" id="queue"></div>
+      <div class="panel">
+        <div class="filters">
+          <div class="field f-q"><label for="f-q">ค้นหา</label><input type="search" id="f-q" placeholder="ชื่อนักเรียน รายการ ครูผู้ฝึกสอน หรือรหัสอ้างอิง"></div>
+          <div class="field"><label for="f-year">ปีการศึกษา</label><select id="f-year"></select></div>
+          <div class="field"><label for="f-level">ระดับ</label><select id="f-level"></select></div>
+          <div class="field"><label for="f-cat">ประเภท</label><select id="f-cat"></select></div>
+          <div class="field"><label for="f-status">สถานะ</label><select id="f-status">
+            <option value="">ทุกสถานะ</option><option value="pending">รอตรวจ</option><option value="returned">ส่งกลับแก้ไข</option><option value="approved">รอทำกราฟิก</option><option value="announced">ประกาศแล้ว</option>
+          </select></div>
+        </div>
+      </div>
+      <div class="panel" id="summaryPanel"></div>
+      <div class="panel">
+        <div class="panel-head"><h2 id="listTitle">ผลงานทั้งหมด</h2><button class="btn small" type="button" id="exportCsv">ส่งออก CSV (สำหรับ SAR)</button></div>
+        <div class="list" id="list"></div>
+      </div>
+    </section>
+
+    <!-- รอตรวจ -->
+    <section class="view" data-view="review" hidden>
+      <div class="view-head">
+        <h1>ตรวจผลงานก่อนประกาศ</h1>
+        <p>เทียบชื่อนักเรียน ชั้น ชื่อรายการ และรางวัลกับรูปเกียรติบัตร แล้วกด “ผ่านการตรวจ” เพื่อส่งต่อให้ฝ่ายประชาสัมพันธ์ หรือ “ส่งกลับแก้ไข” พร้อมบอกสิ่งที่ต้องแก้ (โทรหาผู้แจ้งได้จากเบอร์ในรายการ)</p>
+      </div>
+      <div class="cards" id="reviewBody"></div>
+    </section>
+
+    <!-- ทำกราฟิก -->
+    <section class="view" data-view="publicity" hidden>
+      <div class="view-head">
+        <h1>ทำกราฟิกแสดงความยินดี</h1>
+        <p>เลือกผลงานที่ผ่านการตรวจ ปรับแบบกราฟิก บันทึกภาพ แล้วคัดลอกแคปชันไปโพสต์เพจ Facebook และส่งกลุ่ม LINE</p>
+      </div>
+      <div class="pub-grid">
+        <div class="pub-list" id="pubList" aria-label="ผลงานที่พร้อมทำกราฟิก"></div>
+        <div class="pub-work">
+          <div class="banner warn" id="sampleNote" hidden>นี่คือกราฟิกตัวอย่างจากข้อมูลสมมติ เมื่อมีผลงานผ่านการตรวจ จะเลือกทำกราฟิกจริงได้ที่นี่</div>
+          <div class="banner warn" id="consentWarn" hidden>ผู้ปกครองยังไม่ยินยอมให้เผยแพร่ภาพ ระบบจึงไม่ใส่รูปนักเรียนในกราฟิก ควรขอความยินยอมก่อนประกาศชื่อ</div>
+          <div class="pub-editor">
+            <div class="poster-wrap"><canvas id="poster" width="1080" height="1350" role="img" aria-label="ตัวอย่างกราฟิกแสดงความยินดี"></canvas></div>
+            <div class="controls">
+              <div class="field"><span class="label">แบบกราฟิก</span>
+                <div class="seg"><label><input type="radio" name="tpl" id="tpl-ribbon" value="ribbon" checked>ริบบิ้นสีโรงเรียน</label><label><input type="radio" name="tpl" id="tpl-cert" value="certificate">กรอบเกียรติบัตร</label></div>
+              </div>
+              <div class="field"><span class="label">ขนาด</span>
+                <div class="seg"><label><input type="radio" name="psize" id="size-portrait" value="portrait" checked>โพสต์แนวตั้ง 4:5</label><label><input type="radio" name="psize" id="size-square" value="square">จัตุรัส 1:1</label></div>
+              </div>
+              <div class="field"><label for="headline">หัวข้อ</label><input type="text" id="headline" placeholder="ขอแสดงความยินดี"></div>
+              <div class="field"><span class="label">รูปบนกราฟิก</span><div class="photo-pick" id="photoPick"></div></div>
+              <div class="btn-row">
+                <button class="btn primary" type="button" id="savePng">ดาวน์โหลดภาพ PNG</button>
+                <button class="btn" type="button" id="saveDrive">เก็บภาพลง Google Drive</button>
+              </div>
+              <a id="driveLink" class="hint" target="_blank" rel="noopener" hidden>เปิดภาพใน Google Drive ↗</a>
+            </div>
+          </div>
+          <div class="captions">
+            <div class="cap">
+              <div class="cap-head"><label class="label" for="capFb">แคปชันเพจ Facebook</label><button class="btn small" type="button" data-copy="capFb">คัดลอก</button></div>
+              <textarea id="capFb" rows="11"></textarea>
+              <a id="fbLink" class="hint" target="_blank" rel="noopener" hidden>เปิดเพจ Facebook ของโรงเรียน ↗</a>
+            </div>
+            <div class="cap">
+              <div class="cap-head"><label class="label" for="capLine">ข้อความกลุ่ม LINE</label>
+                <div class="btn-row"><button class="btn small" type="button" data-copy="capLine">คัดลอก</button><a class="btn small" id="lineShare" target="_blank" rel="noopener">เปิด LINE เพื่อส่ง ↗</a></div></div>
+              <textarea id="capLine" rows="11"></textarea>
+              <span class="hint">ส่งข้อความแล้วแนบภาพกราฟิกตามไปในแชตเดียวกัน</span>
+            </div>
+          </div>
+          <div class="announce" id="announceBox">
+            <span class="label">ประกาศแล้วที่</span>
+            <label class="check"><input type="checkbox" id="ch-fb" checked> เพจ Facebook</label>
+            <label class="check"><input type="checkbox" id="ch-line" checked> กลุ่ม LINE</label>
+            <button class="btn good" type="button" id="markAnnounced">บันทึกว่าประกาศแล้ว</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ตั้งค่า -->
+    <section class="view" data-view="school" hidden>
+      <div class="view-head">
+        <h1>ตั้งค่าโรงเรียน</h1>
+        <p>ข้อมูลนี้ใช้บนหัวแบบฟอร์ม กราฟิก และแคปชัน บันทึกลงชีต “ตั้งค่า” ใน Google Drive ของโรงเรียน</p>
+      </div>
+      <form id="schoolForm" novalidate>
+        <fieldset>
+          <legend>ชื่อและตรา</legend>
+          <div class="grid2">
+            <div class="field"><label for="sc-name">ชื่อโรงเรียน</label><input type="text" id="sc-name" placeholder="เช่น โรงเรียนบ้านหนองบัว"></div>
+            <div class="field"><label for="sc-aff">สังกัด / บรรทัดรอง</label><input type="text" id="sc-aff" placeholder="เช่น สพป.ขอนแก่น เขต 1"></div>
+          </div>
+          <div class="field">
+            <span class="label">ตราโรงเรียน</span>
+            <div class="btn-row"><div class="seal" id="logoPrev" style="width:64px;height:64px"></div>
+              <label class="btn small" style="position:relative;overflow:hidden">เลือกไฟล์ตรา<input type="file" id="sc-logo" accept="image/png,image/jpeg,image/webp" style="position:absolute;inset:0;opacity:0;cursor:pointer" aria-label="เลือกไฟล์ตราโรงเรียน"></label>
+              <button type="button" class="link-btn" id="logoRemove" hidden>เอาตราออก</button></div>
+            <span class="hint">ไฟล์ PNG พื้นใสจะดูดีที่สุด</span>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>สีกราฟิกและการประชาสัมพันธ์</legend>
+          <div class="grid2">
+            <div class="field"><label for="sc-c1">สีหลักของกราฟิก</label><input type="color" id="sc-c1" value="#1b2f6e"></div>
+            <div class="field"><label for="sc-c2">สีริบบิ้น / ตัวอักษรเด่น</label><input type="color" id="sc-c2" value="#d4a017"></div>
+          </div>
+          <div class="field"><label for="sc-tags">แฮชแท็กท้ายโพสต์</label><input type="text" id="sc-tags" placeholder="#ข่าวดีบ้านหนองบัว #ภูมิใจในตัวหนู"></div>
+          <div class="field"><label for="sc-fb">ลิงก์เพจ Facebook ของโรงเรียน</label><input type="url" id="sc-fb" placeholder="https://www.facebook.com/..."></div>
+        </fieldset>
+        <fieldset>
+          <legend>การแจ้งเตือนและลิงก์</legend>
+          <div class="field"><label for="sc-mail">อีเมลรับแจ้งเตือนเมื่อมีผลงานใหม่</label><input type="text" id="sc-mail" placeholder="kru.a@school.ac.th, kru.b@gmail.com"><span class="hint">คั่นหลายอีเมลด้วยจุลภาค ระบบส่งจากบัญชี Google ที่ติดตั้ง Apps Script</span></div>
+          <div class="field"><label for="sc-form">ลิงก์หน้าแบบฟอร์มแจ้งผลงาน</label><input type="url" id="sc-form"><span class="hint">แสดงในหน้าภาพรวมให้ครูคัดลอกส่งในกลุ่มผู้ปกครอง</span></div>
+          <div class="field"><label for="sc-staff">ลิงก์หน้าหลังบ้าน</label><input type="url" id="sc-staff"><span class="hint">ใส่ในอีเมลแจ้งเตือน เพื่อให้ครูกดเข้ามาตรวจได้ทันที</span></div>
+        </fieldset>
+        <div class="form-actions"><button class="btn primary" type="submit" id="sc-save">บันทึกการตั้งค่า</button><span class="muted" id="scMsg" role="status"></span></div>
+      </form>
+    </section>
+  </div>
+</main>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-panel" id="modalPanel"></div></div>
+
+<script src="config.js"></script>
+<script src="assets/common.js"></script>
+<script src="assets/poster.js"></script>
+<script src="assets/staff.js"></script>
+</body>
+</html>
