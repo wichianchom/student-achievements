@@ -45,7 +45,10 @@ button,input,select,textarea{font:inherit;color:inherit}
 .top{background:var(--head-bg);color:var(--head-fg);padding-top:env(safe-area-inset-top,0px)}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:18px 12px;flex-wrap:wrap}
 .top.solo{border-bottom:4px solid var(--ribbon)}
-.top.solo .wrap{padding-block:24px 22px}
+.top.solo .wrap{padding-block:24px 22px;flex-wrap:nowrap}
+.admin-link{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.28);color:var(--head-fg);text-decoration:none;font-weight:600;font-size:.9rem}
+.admin-link:hover{border-color:var(--ribbon);color:var(--head-fg)}
+.admin-link svg{width:14px;height:14px}
 .brand{display:flex;align-items:center;gap:14px;min-width:0}
 .seal{width:52px;height:52px;border-radius:50%;flex:none;display:grid;place-items:center;background:#fff;overflow:hidden;box-shadow:0 0 0 3px var(--ribbon)}
 .seal img{width:84%;height:84%;object-fit:contain}

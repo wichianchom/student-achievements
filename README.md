@@ -73,7 +73,7 @@
    - กด **Save**
 5. รอ 1–2 นาที จะได้ลิงก์เว็บ
    - **แบบฟอร์มแจ้งผลงาน:** `https://<ชื่อบัญชี>.github.io/student-achievements/`
-   - **หลังบ้าน:** `https://<ชื่อบัญชี>.github.io/student-achievements/staff.html`
+   - **หลังบ้าน:** `https://<ชื่อบัญชี>.github.io/student-achievements/staff.html` หรือกดปุ่ม **Admin** มุมขวาบนของหน้าแบบฟอร์ม
 
 ### ขั้นที่ 4 · ตั้งค่าโรงเรียน
 
